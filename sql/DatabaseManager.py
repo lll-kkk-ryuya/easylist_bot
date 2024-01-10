@@ -5,7 +5,7 @@ import pandas as pd
 class DatabaseManager:
     def __init__(self, db_url, echo=False):
         self.engine = create_engine(db_url, echo=echo)
-        self.metadata_obj = MetaData(self.engine)
+        self.metadata_obj = MetaData()
 
     def create_table(self, table_name):
         # 既存のテーブルを削除
