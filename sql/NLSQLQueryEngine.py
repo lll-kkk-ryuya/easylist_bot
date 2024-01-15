@@ -85,7 +85,7 @@ class NLSQLQueryEngine:
         self.text_to_sql_prompt = PromptTemplate(
             template=self.template,
             prompt_type=PromptType.TEXT_TO_SQL,
-            function_mappings={"roman_str": format_query_with_roman_numerals}
+            #function_mappings={"roman_str": format_query_with_roman_numerals},
         )
         self.table_query_engine = NLSQLTableQueryEngine(
             sql_database=self.sql_database,
