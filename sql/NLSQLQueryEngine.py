@@ -28,7 +28,6 @@ class NLSQLQueryEngine:
 "Pay attention to which column is in which table. "
 "Also, qualify column names with the table name when needed. "
 "When performing a search, use the LIKE clause with '%' wildcard for partial matching. "
-"If the search term in the LIKE clause includes numerical values within '% %', use the {roman_str} function to convert them to Roman numerals. This is important for ensuring the search query matches the database formatting. "
 "You are required to use the following format, each taking one line:\n\n"
 "Question: Question here\n"
 "SQLQuery: SQL Query to run\n"
