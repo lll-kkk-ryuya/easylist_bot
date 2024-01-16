@@ -1,6 +1,6 @@
 import os
 
-from sql/NLSQLQueryEngine.py import NLSQLQueryEngine
+from sql.NLSQLQueryEngine.py import NLSQLQueryEngine
 
 class NLSQLProcessor:
     def __init__(self, engine):
