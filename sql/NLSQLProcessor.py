@@ -1,6 +1,6 @@
 import os
 
-from easylist_bot.sql.NLSQLQueryEngine import NLSQLQueryEngine
+from easylist_bot.sql import NLSQLQueryEngine
 
 class NLSQLProcessor:
     def __init__(self, engine):
