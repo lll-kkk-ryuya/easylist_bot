@@ -2,7 +2,7 @@
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from sqlalchemy import insert
 from llama_index.llms import OpenAI
-from nlsql import SQLDatabase, NLSQLTableQueryEngine, PromptTemplate, ServiceContext, PromptType
+from llama_index.prompts import BasePromptTemplate, PromptTemplate
 from llama_index.indices.struct_store.sql_query import NLSQLTableQueryEngine,NLStructStoreQueryEngine,PGVectorSQLQueryEngine
 from llama_index.indices.struct_store.sql import SQLStructStoreIndex
 from llama_index import (VectorStoreIndex,SimpleDirectoryReader,ServiceContext,StorageContext,SQLDatabase,)
