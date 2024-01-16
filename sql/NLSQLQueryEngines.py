@@ -2,7 +2,7 @@ import os
 
 from sql.NLSQLQueryEngine import NLSQLQueryEngine
 
-class reate_NLSQLQueryEngines:
+class NLSQLQueryEngines:
     def __init__(self, engine):
         self.engine = engine
         self.query_engines = {}
