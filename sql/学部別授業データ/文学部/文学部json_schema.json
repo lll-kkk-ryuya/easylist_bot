@@ -1,0 +1,79 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "description": "Schema for course and second language data",
+    "type": "object",
+    "properties": {
+        "courseData": {
+            "description": "Array of course data",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "AREANM": {
+                        "description": "Area name",
+                        "type": "string"
+                    },
+                    "LVL": {
+                        "description": "Level",
+                        "type": "string"
+                    },
+                    "FLDNM": {
+                        "description": "Field name",
+                        "type": "string"
+                    },
+                    "KNLESSONLANGNM": {
+                        "description": "Language of instruction",
+                        "type": "string"
+                    },
+                    "ESTB": {
+                        "description": "Establishment",
+                        "type": "string"
+                    },
+                    "SYLLABUS_DETAIL_URL": {
+                        "description": "URL to the syllabus details",
+                        "type": "string"
+                    },
+                    "SBJTNM": {
+                        "description": "Subject name",
+                        "type": "string"
+                    },
+                    "DOWPD": {
+                        "description": "Day of week and period",
+                        "type": "string"
+                    },
+                    "LCTNM": {
+                        "description": "Lecturer name",
+                        "type": "string"
+                    },
+                    "ID": {
+                        "description": "Unique identifier for the course",
+                        "type": "string"
+                    }
+                },
+                "required": ["AREANM", "LVL", "FLDNM", "KNLESSONLANGNM", "ESTB", "SYLLABUS_DETAIL_URL", "SBJTNM", "DOWPD", "LCTNM", "ID"]
+            }
+        },
+        "secondLanguage": {
+            "description": "Object containing fields and languages for second language courses",
+            "type": "object",
+            "properties": {
+                "fieldName": {
+                    "description": "Array of field names for second language courses",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "langName": {
+                    "description": "Array of language names for second language courses",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["fieldName", "langName"]
+        }
+    },
+    "required": ["courseData", "secondLanguage"]
+}
