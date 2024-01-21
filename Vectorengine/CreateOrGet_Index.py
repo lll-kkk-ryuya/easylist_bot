@@ -4,6 +4,7 @@ from llama_index.vector_stores import ChromaVectorStore
 from llama_index.storage.storage_context import StorageContext
 from llama_index.embeddings import OpenAIEmbedding
 
+#既存のコレクションの有無を特定して生成するかどうかを決定したのちにindexを取得する。
 class VectorStoreManager:
     def __init__(self, embed_batch_size=64, path="./chroma_no_metadata"):
         """
