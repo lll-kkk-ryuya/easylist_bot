@@ -67,4 +67,5 @@ class VectorStoreManager:
 # Usage example
 #manager = VectorStoreManager()
 #index = manager.initialize_vector_store_index(uber_nodes, "bunngakubu1")
+#エラーの回避👇
 #manager.process_entities(uber_nodes)
