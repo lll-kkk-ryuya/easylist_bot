@@ -18,14 +18,15 @@ class VectorStoreManager:
         self.path = path
         self.db = chromadb.PersistentClient(path=self.path)
 
-    def initialize_vector_store_index(self, nodes, collection_name):
+    def initialize_vector_store_index(self, collection_name, nodes=None):
         """
         Initializes and returns a VectorStoreIndex object for a given collection.
-        If the collection does not exist, it creates a new one.
+        If the collection does not exist, it creates a new one. If nodes are provided,
+        it initializes the index with these nodes.
 
         Args:
-            nodes: The nodes to be indexed.
             collection_name (str): The name of the collection.
+            nodes (optional): The nodes to be indexed. Default is None.
 
         Returns:
             VectorStoreIndex: The initialized VectorStoreIndex object.
@@ -34,9 +35,8 @@ class VectorStoreManager:
             chroma_collection = self.db.get_collection(collection_name)
             vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
             index = VectorStoreIndex.from_vector_store(vector_store)
-            # Perform operations on the collection here
         except ValueError as e:
-            print(f"エラーが発生しました: {e}")
+            print(f"コレクションが見つかりませんでした。新しいコレクションを作成します: {e}")
             embed_model = OpenAIEmbedding(embed_batch_size=self.embed_batch_size)
             chroma_collection = self.db.get_or_create_collection(collection_name)
 
@@ -46,7 +46,7 @@ class VectorStoreManager:
 
             # Initialize service context
             service_context = ServiceContext.from_defaults(embed_model=embed_model)
-            index = VectorStoreIndex(nodes=nodes, storage_context=storage_context, service_context=service_context)
+            index = VectorStoreIndex(nodes=nodes if nodes else [], storage_context=storage_context, service_context=service_context)
 
         return index
 
