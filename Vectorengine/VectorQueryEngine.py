@@ -3,20 +3,29 @@ from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.llms import OpenAI
 from llama_index.retrievers import VectorIndexRetriever
 from llama_index.response_synthesizers import get_response_synthesizer
-from Vectorengine.CreateOrGet_Index import VectorStoreManager
+from Vectorengine.CreateOrGet_Index import VectorStoreManager  # Import VectorStoreManager
 
 class VectorQueryEngineManager:
-    def __init__(self, index, model="gpt-4", temperature=0.4, similarity_top_k=5):
+    def __init__(self, collection_name, nodes=None, model="gpt-4", temperature=0.4, similarity_top_k=5):
         """
         Initializes the VectorQueryEngineManager.
 
         Args:
-            index: The VectorStoreIndex object.
+            collection_name (str): The name of the collection for the VectorStoreIndex.
+            nodes: The nodes to be indexed.
             model (str): The model name for OpenAI LLM. Default is "gpt-4".
             temperature (float): The temperature for OpenAI LLM. Default is 0.4.
             similarity_top_k (int): The number of top similar items to retrieve. Default is 5.
         """
-        self.index = index
+        vector_store_manager = VectorStoreManager()
+
+        # Process entities only if nodes are provided
+        if nodes is not None:
+            vector_store_manager.process_entities(nodes)
+
+        self.index = vector_store_manager.initialize_vector_store_index(collection_name, nodes)
+
+        # Initialize other properties
         self.model = model
         self.temperature = temperature
         self.similarity_top_k = similarity_top_k
@@ -42,6 +51,7 @@ class VectorQueryEngineManager:
 
         return self.vector_query_engine
 
-# Usage example
-# manager = VectorQueryEngineManager(index)
+# Usage example, collection: 文学部 (bunngakubu1)
+# manager = VectorQueryEngineManager("bunngakubu1", uber_nodes)
 # vector_query_engine = manager.initialize_vector_query_engine()
+
