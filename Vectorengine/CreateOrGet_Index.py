@@ -53,7 +53,7 @@ class VectorStoreManager:
     def process_entities(nodes):
         # ... [process_entitiesメソッドの内容は変更なし] ...
 
-# Usage example
+# Usage example ,collection;　　文学部：bunngakubu1
 # manager = VectorStoreManager()
 # manager.process_entities(uber_nodes)
 # index = manager.initialize_vector_store_index("bunngakubu1", uber_nodes)
