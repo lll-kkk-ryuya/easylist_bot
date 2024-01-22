@@ -3,6 +3,7 @@ from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.llms import OpenAI
 from llama_index.retrievers import VectorIndexRetriever
 from llama_index.response_synthesizers import get_response_synthesizer
+from Vectorengine.CreateOrGet_Index import CreateOrGet_Index
 
 class VectorQueryEngineManager:
     def __init__(self, index, model="gpt-4", temperature=0.4, similarity_top_k=5):
