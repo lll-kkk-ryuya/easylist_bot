@@ -3,6 +3,7 @@ from llama_index import VectorStoreIndex, ServiceContext
 from llama_index.vector_stores import ChromaVectorStore
 from llama_index.storage.storage_context import StorageContext
 from llama_index.embeddings import OpenAIEmbedding
+from llama_index.embeddings import AdapterEmbeddingModel
 
 class VectorStoreManager:
     def __init__(self, embed_batch_size=64, path="./chroma_no_metadata", embed_model=None):
@@ -17,7 +18,8 @@ class VectorStoreManager:
         self.embed_batch_size = embed_batch_size
         self.path = path
         self.db = chromadb.PersistentClient(path=self.path)
-        self.embed_model = embed_model if embed_model else OpenAIEmbedding(embed_batch_size=self.embed_batch_size)
+        self.base_embed_model = resolve_embed_model("local:BAAI/bge-small-en")
+        self.embed_model = AdapterEmbeddingModel(base_embed_model, "embed_model/文学部model")
 
     def initialize_vector_store_index(self, collection_name, nodes=None):
         """
@@ -38,7 +40,6 @@ class VectorStoreManager:
             index = VectorStoreIndex.from_vector_store(vector_store)
         except ValueError as e:
             print(f"コレクションが見つかりませんでした。新しいコレクションを作成します: {e}")
-
             # Initialize vector store and storage context
             vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
             storage_context = StorageContext.from_defaults(vector_store=vector_store)
