@@ -37,7 +37,11 @@ class VectorStoreManager:
         try:
             chroma_collection = self.db.get_collection(collection_name)
             vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-            index = VectorStoreIndex.from_vector_store(vector_store)
+            service_context = ServiceContext.from_defaults(embed_model=self.embed_model)
+            index = VectorStoreIndex.from_vector_store(
+                vector_store,
+                service_context=service_context
+            )
         except ValueError as e:
             print(f"コレクションが見つかりませんでした。新しいコレクションを作成します: {e}")
             # Initialize vector store and storage context
