@@ -2,63 +2,49 @@ import chromadb
 from llama_index import VectorStoreIndex, ServiceContext
 from llama_index.vector_stores import ChromaVectorStore
 from llama_index.storage.storage_context import StorageContext
-from llama_index.embeddings import OpenAIEmbedding
-from llama_index.embeddings import AdapterEmbeddingModel
+from llama_index.embeddings import AdapterEmbeddingModel, resolve_embed_model
 
 class VectorStoreManager:
-    def __init__(self, embed_batch_size=64, path="./chroma_no_metadata", embed_model=None):
-        """
-        Initializes the VectorStoreManager.
-
-        Args:
-            embed_batch_size (int): Batch size for the embedding model.
-            path (str): Path where the data is stored.
-            embed_model (optional): Custom embedding model to use. Defaults to OpenAIEmbedding if None.
-        """
+    def __init__(self, collection_name, embed_batch_size=64, path="chroma_no_metadata", nodes=None):
+        self.collection_name = collection_name
         self.embed_batch_size = embed_batch_size
         self.path = path
-        self.db = chromadb.PersistentClient(path=self.path)
-        self.base_embed_model = resolve_embed_model("local:BAAI/bge-small-en")
-        self.embed_model = AdapterEmbeddingModel(base_embed_model, "embed_model/文学部model")
+        self.nodes = nodes
+        self.index = self.initialize_vector_store_index()
 
-    def initialize_vector_store_index(self, collection_name, nodes=None):
-        """
-        Initializes and returns a VectorStoreIndex object for a given collection.
-        If the collection does not exist, it creates a new one. If nodes are provided,
-        it initializes the index with these nodes.
+    def initialize_vector_store_index(self):
+        db = chromadb.PersistentClient(path=self.path)
+        base_embed_model = resolve_embed_model("local:BAAI/bge-small-en")
+        embed_model = AdapterEmbeddingModel(base_embed_model, "embed_model/文学部model")
 
-        Args:
-            collection_name (str): The name of the collection.
-            nodes (optional): The nodes to be indexed. Default is None.
-
-        Returns:
-            VectorStoreIndex: The initialized VectorStoreIndex object.
-        """
         try:
-            chroma_collection = self.db.get_collection(collection_name)
+            chroma_collection = db.get_collection(self.collection_name)
             vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-            service_context = ServiceContext.from_defaults(embed_model=self.embed_model)
-            index = VectorStoreIndex.from_vector_store(
-                vector_store,
-                service_context=service_context
-            )
+            service_context = ServiceContext.from_defaults(embed_model=embed_model)
+
+            return VectorStoreIndex.from_vector_store(vector_store, service_context=service_context)
+
         except ValueError as e:
-            print(f"コレクションが見つかりませんでした。新しいコレクションを作成します: {e}")
-            # Initialize vector store and storage context
+            print(f"エラーが発生しました: {e}")
+            chroma_collection = db.get_or_create_collection(self.collection_name)
+
             vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
             storage_context = StorageContext.from_defaults(vector_store=vector_store)
+            service_context = ServiceContext.from_defaults(embed_model=embed_model)
 
-            # Initialize service context with the specified or default embedding model
-            service_context = ServiceContext.from_defaults(embed_model=self.embed_model)
-            index = VectorStoreIndex(nodes=nodes if nodes else [], storage_context=storage_context, service_context=service_context)
-
-        return index
+            return VectorStoreIndex(nodes=self.nodes, storage_context=storage_context, service_context=service_context)
 
     @staticmethod
-    def process_entities(nodes):
-        # ... [process_entitiesメソッドの内容は変更なし] ...
+    def process_nodes(nodes):
+        for node in nodes:
+            if 'entities' in node.metadata and isinstance(node.metadata['entities'], list):
+                entities_str = ', '.join(node.metadata['entities'])
+                node.metadata['entities'] = entities_str
+
+
+
 
 # Usage example ,collection;　　文学部：bunngakubu1
 # manager = VectorStoreManager()
-# manager.process_entities(uber_nodes)
+# manager.process_nodes(uber_nodes)
 # index = manager.initialize_vector_store_index("bunngakubu1", uber_nodes)
