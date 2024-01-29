@@ -72,4 +72,4 @@ class VectorStoreMnager:
 # Usage example ,collection;　　文学部：bunngakubu1
 # manager = VectorStoreManager()
 # manager.process_nodes(uber_nodes)
-# index = manager.initialize_vector_store_index("bunngakubu1", uber_nodes)
+# index = manager.initialize_index("bunngakubu1", uber_nodes)
