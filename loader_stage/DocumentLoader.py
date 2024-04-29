@@ -6,6 +6,7 @@ class DocumentLoader:#metaデータ取得
         self.directory = directory
 
     def load_documents(self):
+    
         documents = []
         for filename in os.listdir(self.directory):
             if filename.endswith(".txt"):
