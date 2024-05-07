@@ -6,6 +6,7 @@ from llama_index.storage.storage_context import StorageContext
 from llama_index.embeddings import AdapterEmbeddingModel, resolve_embed_model
 
 class VectorStoreMnager:
+
     def __init__(self, collection_name, embed_batch_size=64, path="chroma_no_metadata", embed_model_path):
         """
         Initializes a VectorStoreIndexInitializer object.
